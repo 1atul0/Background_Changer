@@ -1,69 +1,54 @@
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+  TouchableOpacity,
   View,
 } from 'react-native';
+import React, {useState} from 'react';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-
-type CustomTextProps={
-  children:React.ReactNode;
-}
-function CustomText({children}:CustomTextProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
+  const [backgroundColor, setBackgroundColor] = useState('#ffffff');
+  function generateColor() {
+    const hexRange = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      const index = Math.round(Math.random() * 15);
+      color += hexRange[index];
+    }
+    setBackgroundColor(color);
+  }
   return (
-    <Text
-    style={[
-      {
-        color: isDarkMode ? Colors.light : Colors.dark,
-      },
-    ]}>
-    {children}
-  </Text>
-  )
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-            <CustomText>Hellow </CustomText>
+    <>
+      <StatusBar backgroundColor={backgroundColor} />
+      <View style={[styles.container, {backgroundColor: backgroundColor}]}>
+        <TouchableOpacity onPress={generateColor}>
+          <View style={styles.actionBtn}>
+            <Text style={styles.btnText}>Press me</Text>
           </View>
-      </ScrollView>
-    </SafeAreaView>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 }
 
-const styles = StyleSheet.create({});
-
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionBtn: {
+    backgroundColor: '#D63031',
+    padding: 10,
+    borderRadius: 6,
+    borderColor: 'yellow',
+    borderWidth: 1,
+  },
+  btnText: {
+    fontSize: 14,
+    color: Colors.lighter,
+    fontWeight: 'bold',
+  },
+});
